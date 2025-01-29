@@ -11,3 +11,8 @@ def test(request):
 @router.get("/change")
 def change(request):
     return "change"
+
+
+@router.get("/update")
+def update(request):
+    return "update"
