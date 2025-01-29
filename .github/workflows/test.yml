@@ -20,12 +20,12 @@ jobs:
       - name: Parse To HTML
         run: |
           npm install -g redoc-cli
-          redoc-cli bundle open-api.json -o .${{ github.ref_name }}/index.html
+          redoc-cli bundle open-api.json -o .output/${{ github.ref_name }}/index.html
       - name: Upload static files as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .${{ github.ref_name }}
+          path: .output
   deploy:
     # https://docs.github.com/ja/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
     environment:
@@ -39,8 +39,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: ${{ github.ref_name }}
-          folder: .${{ github.ref_name }}
-          clean: false
+        uses: actions/deploy-pages@v4
