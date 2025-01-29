@@ -30,7 +30,7 @@ jobs:
     # https://docs.github.com/ja/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
     environment:
       name: github-pages
-      url: ${{steps.deployment.outputs.page_url}}
+      url: ${{steps.deployment.outputs.page_url}}${{ github.ref_name }}
     permissions:
       pages: write
       id-token: write
