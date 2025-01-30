@@ -6,7 +6,7 @@ jobs:
       - name: Convert Branch Name To Safe Url
         run: |
           SAFE_REF_NAME=$(echo "${{ github.ref_name }}" | tr '/' '-' | tr -d '#')
-          echo "SAFE_REF_NAME=${SAFE_REF_NAME}" >> $GITHUB_ENV
+          echo "SAFE_REF_NAME=${SAFE_REF_NAME}" >> $GITHUB_OUTPUT
       - name: Checkout Repo
         uses: actions/checkout@v4
       - name: Configure GitHub Pages
