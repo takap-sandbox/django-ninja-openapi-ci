@@ -2,8 +2,11 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      SAFE_REF_NAME: ${{ steps.safe-url.outputs.SAFE_REF_NAME }}
     steps:
       - name: Convert Branch Name To Safe Url
+        id: safe-url
         run: |
           SAFE_REF_NAME=$(echo "${{ github.ref_name }}" | tr '/' '-' | tr -d '#')
           echo "SAFE_REF_NAME=${SAFE_REF_NAME}" >> $GITHUB_OUTPUT
@@ -32,7 +35,7 @@ jobs:
       - name: Parse To HTML
         run: |
           npm install -g redoc-cli
-          redoc-cli bundle open-api.json -o .output/${{ env.SAFE_REF_NAME }}/index.html
+          redoc-cli bundle open-api.json -o .output/${{ steps.safe-url.outputs.SAFE_REF_NAME }}/index.html
       - name: Save Output
         id: cache-output-save
         uses: actions/cache/save@v4
@@ -48,7 +51,7 @@ jobs:
     # https://docs.github.com/ja/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
     environment:
       name: github-pages
-      url: ${{steps.deployment.outputs.page_url}}${{ env.SAFE_REF_NAME }}
+      url: ${{steps.deployment.outputs.page_url}}${{ needs.build.outputs.SAFE_REF_NAME }}
     permissions:
       pages: write
       id-token: write
