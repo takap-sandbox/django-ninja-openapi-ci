@@ -8,11 +8,6 @@ def test(request):
     return "test"
 
 
-@router.get("/change")
+@router.get("/test")
 def change(request):
-    return "change"
-
-
-@router.get("/update")
-def update(request):
-    return "update"
+    return "test"
