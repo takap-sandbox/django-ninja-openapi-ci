@@ -15,11 +15,12 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Restore cached
-        id: cache-output-restore
+        id: cache-restore
         uses: actions/cache/restore@v4
         with:
           path: .output
           key: openapi-output
+          restore-keys: openapi-output
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -36,6 +37,16 @@ jobs:
         run: |
           npm install -g redoc-cli
           redoc-cli bundle open-api.json -o .output/${{ steps.safe-url.outputs.SAFE_REF_NAME }}/index.html
+      # https://github.com/actions/cache/issues/342#issuecomment-1399442670
+      - name: Clear Cache When Exist
+        if: ${{ steps.cache-restore.outputs.cache-hit }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh extension install actions/gh-actions-cache
+          gh actions-cache delete openapi-output --confirm
+        continue-on-error: true
       - name: Save Output
         id: cache-output-save
         uses: actions/cache/save@v4
