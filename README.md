@@ -1,0 +1,1 @@
+blog記事: https://www.takap.dev/blogs/github-actions-redoc-pages-deploy
