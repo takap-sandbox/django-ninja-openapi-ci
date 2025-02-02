@@ -1,7 +1,7 @@
 on: [push]
 
 env:
-  API: https://api.github.com/repos/takap-sandbox/django-ninja-openapi-ci/actions/workflows/test.yml/runs
+  API: 'https://api.github.com/repos/takap-sandbox/django-ninja-openapi-ci/actions/workflows/test.yml/runs?status=success'
 
 jobs:
   build:
@@ -29,6 +29,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: output-artifact
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ env.RUN_ID }}
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
